@@ -1,0 +1,578 @@
+<!DOCTYPE html>
+<html lang="en">
+<!--
+╔══════════════════════════════════════════════════════════════════╗
+║ LINCOLN BIO — self-hosted link page template                     ║
+║ CC BY-NC 4.0 · free to use/adapt/share · please don't resell it  ║
+║ github.com/mrjameskitty/lincoln-bio · lincoln-bio.html v1.0      ║
+╚══════════════════════════════════════════════════════════════════╝
+  See README.md for setup and editing instructions.
+-->
+<head>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+
+<!-- ★★★★★ EDIT 1: ★★★★★ -->
+<!-- —————▶	Change the titles and description to your own						◀————— -->
+	<title>Lincoln Bio</title>
+	<meta property="og:title"    content="Lincoln Bio" />
+	<meta property="og:description" content="All my links in one place." />
+
+<!-- ★★★★★ EDIT 2 (Optional): ★★★★★ -->
+<!-- —————▶	Replace with a full URL to your social share preview image; 
+			ideally, 1200×630px. Remove comment tags to activate.				◀————— -->
+	<!-- <meta property="og:image" content="https://yourdomain.com/og.png" /> -->
+
+	<style>
+/*
+╔══════════════════════════════════════════════════════════════════╗
+║     DESIGN VARIABLES — tweak these to retheme the whole page     ║
+╚══════════════════════════════════════════════════════════════════╝
+*/
+		:root {
+			/* Page background */
+			--page-bg-dark:			#2e2e2e;
+			--page-bg-light:		#585858;
+			/* Card */
+			--card-bg:				#e9e9e9;
+			--card-radius:			20px;
+			--card-shadow:			0 0.5rem 1.5rem rgba(0,0,0,0.35);
+			--card-max-width:		420px;
+			--card-pad:				36px;
+			/* Avatar */
+			--avatar-size:			256px;
+			--avatar-border:		3px solid #ccc;
+			/* Banner ribbon */
+			--banner-fill:			#fefefe;
+			--banner-stroke:		#cccccc;
+			--banner-stroke-w:		2px;
+			--banner-name-size:		0.9rem;
+			--banner-name-weight:	700;
+			/* Featured icon buttons */
+			--icon-btn-bg:			#d4d4d4;
+			--icon-btn-hover:		#b8b8b8;
+			--icon-btn-size:		80px;
+			--icon-size:			48px;
+			/* Link list buttons */
+			--link-bg:				#45a4da;
+			--link-hover:			#036392;
+			--link-text:			#f5f5f5;
+			--link-radius:			0.5rem;
+			--link-font-size:		1.05rem;
+			/* Typography */
+			--tagline-color:		#555;
+			--copyright-color:		#999;
+		}
+		/* RESET */
+		*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+		/* PAGE */
+		body {
+			min-height: 100vh;
+			/* System font stack: SF Pro › Segoe UI › Roboto › Helvetica › Arial */
+			font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto,
+			"Helvetica Neue", Arial, sans-serif;
+			background-image: radial-gradient(var(--page-bg-light), var(--page-bg-dark));
+			display: flex;
+			justify-content: center;
+			align-items: flex-start;
+			padding: 2rem 1rem 3rem;
+		}
+		/* CARD */
+		#card {
+			background: var(--card-bg);
+			max-width: var(--card-max-width);
+			width: 100%;
+			border-radius: var(--card-radius);
+			box-shadow: var(--card-shadow);
+			padding: var(--card-pad);
+			text-align: center;
+		}
+		/* Full-bleed on small phones */
+		@media (max-width: 480px) {
+			body  { padding: 0; align-items: flex-start; }
+			#card { border-radius: 0; min-height: 100vh; box-shadow: none; }
+		}
+		/* PROFILE SECTION */
+		#profile {
+			display: flex;
+			flex-direction: column;
+			align-items: center;
+			padding-top: 20px;
+		}
+		/* Avatar */
+		#avatar {
+			display: block;
+			width: var(--avatar-size);
+			height: var(--avatar-size);
+			border-radius: 50%;
+			border: var(--avatar-border);
+			background: var(--banner-fill);
+			object-fit: cover;
+			position: relative;
+			z-index: 1;
+		}
+		/* BANNER RIBBON */
+		#banner {
+			display: flex;
+			align-items: flex-start;
+			width: auto;
+			margin-top: -25px;
+			position: relative;
+			z-index: 2;
+		}
+		/* Wing SVGs */
+		.wing {
+			width: 96px;
+			height: 48px;
+			flex-shrink: 0;
+			display: block;
+			overflow: visible;
+			position: relative;
+			z-index: 1;
+			margin-top: 15px;
+		}
+		.wing path {
+			fill: var(--banner-fill);
+			stroke: var(--banner-stroke);
+			stroke-width: var(--banner-stroke-w);
+			stroke-linejoin: round;
+			paint-order: stroke fill;
+		}
+		#wing-right {
+			transform: scaleX(-1);
+			margin-left: -42px;
+		}
+		#wing-left { margin-right: -42px; }
+		#banner-name {
+			flex: 1 1 auto;
+			min-width: 160px;
+			height: 48px;
+			background: var(--banner-fill);
+			outline: var(--banner-stroke-w) solid var(--banner-stroke);
+			display: flex;
+			align-items: center;
+			justify-content: center;
+			font-size: var(--banner-name-size);
+			font-weight: var(--banner-name-weight);
+			letter-spacing: 0.1em;
+			color: #111;
+			white-space: nowrap;
+			overflow: hidden;
+			text-overflow: ellipsis;
+			padding: 0 10px;
+			position: relative;
+			z-index: 2;
+		}
+		/* TAGLINE */
+		#tagline {
+			margin-top: 28px;
+			margin-bottom: 0;
+			font-size: 0.9rem;
+			color: var(--tagline-color);
+			line-height: 1.5;
+			padding: 0 8px;
+		}
+		/* FEATURED ICON ROW */
+		#featured {
+		display: flex;
+		flex-wrap: wrap;
+		justify-content: center;
+		gap: 36px;
+		margin: 40px 0 40px;
+		}
+		/* Hide the featured section entirely if empty */
+		#featured:empty { display: none; }
+		.feat {
+			display: inline-flex;
+			align-items: center;
+			justify-content: center;
+			width: var(--icon-btn-size);
+			height: var(--icon-btn-size);
+			border-radius: 50%;
+			background: var(--icon-btn-bg);
+			text-decoration: none;
+			transition: background .2s ease, transform .15s ease;
+		}
+		.feat:hover {
+			background: var(--icon-btn-hover);
+			transform: scale(1.08);
+		}
+		.feat::before {
+			content: "";
+			display: block;
+			width: var(--icon-size);
+			height: var(--icon-size);
+			background-size: contain;
+			background-repeat: no-repeat;
+			background-position: center;
+		}
+		/* LINK LIST */
+		#links {
+			list-style: none;
+			margin: 16px 0 0;
+			display: flex;
+			flex-direction: column;
+			gap: 12px;
+		}
+		#links a {
+			display: flex;
+			align-items: center;
+			width: 100%;
+			padding: 15px 20px;
+			background: var(--link-bg);
+			color: var(--link-text);
+			text-decoration: none;
+			font-size: var(--link-font-size);
+			font-weight: 500;
+			border-radius: var(--link-radius);
+			transition: background .22s cubic-bezier(.08,.59,.29,.99), transform .15s ease;
+		}
+		#links a:hover {
+			background: var(--link-hover);
+			transform: scale(1.015);
+		}
+		/* Icon prefix for each link button */
+		#links a::before {
+			content: "";
+			display: inline-block;
+			width: 20px;
+			height: 20px;
+			flex-shrink: 0;
+			margin-right: 12px;
+			background-size: contain;
+			background-repeat: no-repeat;
+			background-position: center;
+			filter: invert(1);
+		}
+
+		/* COPYRIGHT */
+		#copyright {
+			margin-top: 28px;
+			font-size: 0.75rem;
+			color: var(--copyright-color);
+			line-height: 1.8;
+		}
+		#copyright a { color: var(--copyright-color); }
+
+/*
+╔══════════════════════════════════════════════════════════════════╗
+║     PLATFORM ICONS                                               ║
+╚══════════════════════════════════════════════════════════════════╝
+ To add platforms, we recommend Simple Icons (simpleicons.org) SVGs
+*/
+
+/* CONTACT & OTHER */
+a.website::before { background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Cpath fill='%23111' d='M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-1 17.93c-3.95-.49-7-3.85-7-7.93 0-.62.08-1.21.21-1.79L9 15v1c0 1.1.9 2 2 2v1.93zm6.9-2.54c-.26-.81-1-1.39-1.9-1.39h-1v-3c0-.55-.45-1-1-1H8v-2h2c.55 0 1-.45 1-1V7h2c1.1 0 2-.9 2-2v-.41c2.93 1.19 5 4.06 5 7.41 0 2.08-.8 3.97-2.1 5.39z'/%3E%3C/svg%3E"); }
+a.email::before { background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Cpath fill='%23111' d='M20 4H4c-1.1 0-2 .9-2 2v12c0 1.1.9 2 2 2h16c1.1 0 2-.9 2-2V6c0-1.1-.9-2-2-2zm0 4l-8 5-8-5V6l8 5 8-5v2z'/%3E%3C/svg%3E"); }
+/* SOCIAL */
+a.bluesky::before { background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Cpath fill='%23111' d='M5.202 2.857C7.954 4.922 10.913 9.11 12 11.358c1.087-2.247 4.046-6.436 6.798-8.501C20.783 1.366 24 .213 24 3.883c0 .732-.42 6.156-.667 7.037-.856 3.061-3.978 3.842-6.755 3.37 4.854.826 6.089 3.562 3.422 6.299-5.065 5.196-7.28-1.304-7.847-2.97-.104-.305-.152-.448-.153-.327 0-.121-.05.022-.153.327-.568 1.666-2.782 8.166-7.847 2.97-2.667-2.737-1.432-5.473 3.422-6.3-2.777.473-5.899-.308-6.755-3.369C.42 10.04 0 4.615 0 3.883c0-3.67 3.217-2.517 5.202-1.026'/%3E%3C/svg%3E"); }
+a.mastodon::before { background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Cpath fill='%23111' d='M23.268 5.313c-.35-2.578-2.617-4.61-5.304-5.004C17.51.242 15.792 0 11.813 0h-.03c-3.98 0-4.835.242-5.288.309C3.882.692 1.496 2.518.917 5.127.64 6.412.61 7.837.661 9.143c.074 1.874.088 3.745.26 5.611.118 1.24.325 2.47.62 3.68.55 2.237 2.777 4.098 4.96 4.857 2.336.792 4.849.923 7.256.38.265-.061.527-.132.786-.213.585-.184 1.27-.39 1.774-.753a.057.057 0 0 0 .023-.043v-1.809a.052.052 0 0 0-.066-.054c-1.517.363-3.072.546-4.632.546-2.73 0-3.463-1.284-3.674-1.818a5.593 5.593 0 0 1-.319-1.433.053.053 0 0 1 .066-.054c1.517.363 3.072.546 4.632.546.376 0 .75 0 1.125-.01 1.57-.044 3.224-.124 4.768-.422.038-.008.077-.015.11-.024 2.435-.464 4.753-1.92 4.989-5.604.008-.145.03-1.52.03-1.67.002-.512.167-3.63-.024-5.545zm-3.748 9.195h-2.561V8.29c0-1.309-.55-1.976-1.67-1.976-1.23 0-1.846.79-1.846 2.35v3.403h-2.546V8.663c0-1.56-.617-2.35-1.848-2.35-1.112 0-1.668.668-1.67 1.977v6.218H4.822V8.102c0-1.31.337-2.35 1.011-3.12.696-.77 1.608-1.164 2.74-1.164 1.311 0 2.302.5 2.962 1.498l.638 1.06.638-1.06c.66-.999 1.65-1.498 2.96-1.498 1.13 0 2.043.395 2.74 1.164.675.77 1.012 1.81 1.012 3.12z'/%3E%3C/svg%3E"); }
+a.threads::before { background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Cpath fill='%23111' d='M12.186 24h-.007c-3.581-.024-6.334-1.205-8.184-3.509C2.35 18.44 1.5 15.586 1.472 12.01v-.017c.03-3.579.879-6.43 2.525-8.482C5.845 1.205 8.6.024 12.18 0h.014c2.746.02 5.043.725 6.826 2.098 1.677 1.29 2.858 3.13 3.509 5.467l-2.04.569c-1.104-3.96-3.898-5.984-8.304-6.015-2.91.022-5.11.936-6.54 2.717C4.307 6.504 3.616 8.914 3.589 12c.027 3.086.718 5.496 2.057 7.164 1.43 1.783 3.631 2.698 6.54 2.717 2.623-.02 4.358-.631 5.8-2.045 1.647-1.613 1.618-3.593 1.09-4.798-.31-.71-.873-1.3-1.634-1.75-.192 1.352-.622 2.446-1.284 3.272-.886 1.102-2.14 1.704-3.73 1.79-1.202.065-2.361-.218-3.259-.801-1.063-.689-1.685-1.74-1.752-2.964-.065-1.19.408-2.285 1.33-3.082.88-.76 2.119-1.207 3.583-1.291a13.853 13.853 0 0 1 3.02.142c-.126-.742-.375-1.332-.75-1.757-.513-.586-1.308-.883-2.359-.89h-.029c-.844 0-1.992.232-2.721 1.32L7.734 7.847c.98-1.454 2.568-2.256 4.478-2.256h.044c3.194.02 5.097 1.975 5.287 5.388.108.046.216.094.321.142 1.49.7 2.58 1.761 3.154 3.07.797 1.82.871 4.79-1.548 7.158-1.85 1.81-4.094 2.628-7.277 2.65Zm1.003-11.69c-.242 0-.487.007-.739.021-1.836.103-2.98.946-2.916 2.143.067 1.256 1.452 1.839 2.784 1.767 1.224-.065 2.818-.543 3.086-3.71a10.5 10.5 0 0 0-2.215-.221z'/%3E%3C/svg%3E"); }
+a.instagram::before { background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Cpath fill='%23111' d='M7.0301.084c-1.2768.0602-2.1487.264-2.911.5634-.7888.3075-1.4575.72-2.1228 1.3877-.6652.6677-1.075 1.3368-1.3802 2.127-.2954.7638-.4956 1.6365-.552 2.914-.0564 1.2775-.0689 1.6882-.0626 4.947.0062 3.2586.0206 3.6671.0825 4.9473.061 1.2765.264 2.1482.5635 2.9107.308.7889.72 1.4573 1.388 2.1228.6679.6655 1.3365 1.0743 2.1285 1.38.7632.295 1.6361.4961 2.9134.552 1.2773.056 1.6884.069 4.9462.0627 3.2578-.0062 3.668-.0207 4.9478-.0814 1.28-.0607 2.147-.2652 2.9098-.5633.7889-.3086 1.4578-.72 2.1228-1.3881.665-.6682 1.0745-1.3378 1.3795-2.1284.2957-.7632.4966-1.636.552-2.9124.056-1.2809.0692-1.6898.063-4.948-.0063-3.2583-.021-3.6668-.0817-4.9465-.0607-1.2797-.264-2.1487-.5633-2.9117-.3084-.7889-.72-1.4568-1.3876-2.1228C21.2982 1.33 20.628.9208 19.8378.6165 19.074.321 18.2017.1197 16.9244.0645 15.6471.0093 15.236-.005 11.977.0014 8.718.0076 8.31.0215 7.0301.0839m.1402 21.6932c-1.17-.0509-1.8053-.2453-2.2287-.408-.5606-.216-.96-.4771-1.3819-.895-.422-.4178-.6811-.8186-.9-1.378-.1644-.4234-.3624-1.058-.4171-2.228-.0595-1.2645-.072-1.6442-.079-4.848-.007-3.2037.0053-3.583.0607-4.848.05-1.169.2456-1.805.408-2.2282.216-.5613.4762-.96.895-1.3816.4188-.4217.8184-.6814 1.3783-.9003.423-.1651 1.0575-.3614 2.227-.4171 1.2655-.06 1.6447-.072 4.848-.079 3.2033-.007 3.5835.005 4.8495.0608 1.169.0508 1.8053.2445 2.228.408.5608.216.96.4754 1.3816.895.4217.4194.6816.8176.9005 1.3787.1653.4217.3617 1.056.4169 2.2263.0602 1.2655.0739 1.645.0796 4.848.0058 3.203-.0055 3.5834-.061 4.848-.051 1.17-.245 1.8055-.408 2.2294-.216.5604-.4763.96-.8954 1.3814-.419.4215-.8181.6811-1.3783.9-.4224.1649-1.0577.3617-2.2262.4174-1.2656.0595-1.6448.072-4.8493.079-3.2045.007-3.5825-.006-4.848-.0608M16.953 5.5864A1.44 1.44 0 1 0 18.39 4.144a1.44 1.44 0 0 0-1.437 1.4424M5.8385 12.012c.0067 3.4032 2.7706 6.1557 6.173 6.1493 3.4026-.0065 6.157-2.7701 6.1506-6.1733-.0065-3.4032-2.771-6.1565-6.174-6.1498-3.403.0067-6.156 2.771-6.1496 6.1738M8 12.0077a4 4 0 1 1 4.008 3.9921A3.9996 3.9996 0 0 1 8 12.0077'/%3E%3C/svg%3E"); }
+a.tumblr::before { background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Cpath fill='%23111' d='M14.563 24c-5.093 0-7.031-3.756-7.031-6.411V9.747H5.116V6.648c3.63-1.313 4.512-4.596 4.71-6.469C9.84.051 9.941 0 9.999 0h3.517v6.114h4.801v3.633h-4.82v7.47c.016 1.001.375 2.371 2.207 2.371h.09c.631-.02 1.486-.205 1.936-.419l1.156 3.425c-.436.636-2.4 1.374-4.156 1.404h-.178l.011.002z'/%3E%3C/svg%3E"); }
+a.twitter::before { background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Cpath fill='%23111' d='M14.234 10.162 22.977 0h-2.072l-7.591 8.824L7.251 0H.258l9.168 13.343L.258 24H2.33l8.016-9.318L16.749 24h6.993zm-2.837 3.299-.929-1.329L3.076 1.56h3.182l5.965 8.532.929 1.329 7.754 11.09h-3.182z'/%3E%3C/svg%3E"); }
+a.facebook::before { background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Cpath fill='%23111' d='M9.101 23.691v-7.98H6.627v-3.667h2.474v-1.58c0-4.085 1.848-5.978 5.858-5.978.401 0 .955.042 1.468.103a8.68 8.68 0 0 1 1.141.195v3.325a8.623 8.623 0 0 0-.653-.036 26.805 26.805 0 0 0-.733-.009c-.707 0-1.259.096-1.675.309a1.686 1.686 0 0 0-.679.622c-.258.42-.374.995-.374 1.752v1.297h3.919l-.386 2.103-.287 1.564h-3.246v8.245C19.396 23.238 24 18.179 24 12.044c0-6.627-5.373-12-12-12s-12 5.373-12 12c0 5.628 3.874 10.35 9.101 11.647Z'/%3E%3C/svg%3E"); }
+a.tiktok::before { background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Cpath fill='%23111' d='M12.525.02c1.31-.02 2.61-.01 3.91-.02.08 1.53.63 3.09 1.75 4.17 1.12 1.11 2.7 1.62 4.24 1.79v4.03c-1.44-.05-2.89-.35-4.2-.97-.57-.26-1.1-.59-1.62-.93-.01 2.92.01 5.84-.02 8.75-.08 1.4-.54 2.79-1.35 3.94-1.31 1.92-3.58 3.17-5.91 3.21-1.43.08-2.86-.31-4.08-1.03-2.02-1.19-3.44-3.37-3.65-5.71-.02-.5-.03-1-.01-1.49.18-1.9 1.12-3.72 2.58-4.96 1.66-1.44 3.98-2.13 6.15-1.72.02 1.48-.04 2.96-.04 4.44-.99-.32-2.15-.23-3.02.37-.63.41-1.11 1.04-1.36 1.75-.21.51-.15 1.07-.14 1.61.24 1.64 1.82 3.02 3.5 2.87 1.12-.01 2.19-.66 2.77-1.61.19-.33.4-.67.41-1.06.1-1.79.06-3.57.07-5.36.01-4.03-.01-8.05.02-12.07z'/%3E%3C/svg%3E"); }
+a.pixelfed::before { background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Cpath fill='%23111' d='M12 24C5.3726 24 0 18.6274 0 12S5.3726 0 12 0s12 5.3726 12 12-5.3726 12-12 12m-.9526-9.3802h2.2014c2.0738 0 3.7549-1.6366 3.7549-3.6554S15.3226 7.309 13.2488 7.309h-3.1772c-1.1964 0-2.1663.9442-2.1663 2.1089v8.208z'/%3E%3C/svg%3E"); }
+/* ART & PORTFOLIO */
+a.cara::before { background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 200 200'%3E%3Cpath fill='%23111' d='M100,0c55.23,0,100,44.77,100,100s-44.77,100-100,100S0,155.23,0,100,44.77,0,100,0ZM131.54,80.54l16.89-22.72c-26.83-21.29-67.8-19.95-91.38,6.62-7.82,8.81-12.84,20.29-13.42,34.23-.81,19.39,7.9,37.34,21.48,46.98,25.68,18.23,60.25,13.83,84.89-3.45l-15.1-24.07c-18.12,14.09-51.39,12.75-53.69-15.44-2.3-28.19,28.86-36.24,50.34-22.15Z'/%3E%3C/svg%3E"); }
+a.deviantart::before { background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Cpath fill='%23111' d='M19.207 4.794l.23-.43V0H15.07l-.436.44-2.058 3.925-.646.436H4.58v5.993h4.04l.36.436-4.175 7.98-.24.43V24H8.93l.436-.44 2.07-3.925.644-.436h7.35v-5.993h-4.05l-.36-.438 4.186-7.977z'/%3E%3C/svg%3E"); }
+a.artstation::before { background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Cpath fill='%23111' d='M0 17.723l2.027 3.505h.001a2.424 2.424 0 0 0 2.164 1.333h13.457l-2.792-4.838H0zm24 .025c0-.484-.143-.935-.388-1.314L15.728 2.728a2.424 2.424 0 0 0-2.142-1.289H9.419L21.598 22.54l1.92-3.325c.378-.637.482-.919.482-1.467zm-11.129-3.462L7.428 4.858l-5.444 9.428h10.887z'/%3E%3C/svg%3E"); }
+a.behance::before { background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Cpath fill='%23111' d='M16.969 16.927a2.561 2.561 0 0 0 1.901.677 2.501 2.501 0 0 0 1.531-.475c.362-.235.636-.584.779-.99h2.585a5.091 5.091 0 0 1-1.9 2.896 5.292 5.292 0 0 1-3.091.88 5.839 5.839 0 0 1-2.284-.433 4.871 4.871 0 0 1-1.723-1.211 5.657 5.657 0 0 1-1.08-1.874 7.057 7.057 0 0 1-.383-2.393c-.005-.8.129-1.595.396-2.349a5.313 5.313 0 0 1 5.088-3.604 4.87 4.87 0 0 1 2.376.563c.661.362 1.231.87 1.668 1.485a6.2 6.2 0 0 1 .943 2.133c.194.821.263 1.666.205 2.508h-7.699c-.063.79.184 1.574.688 2.187ZM6.947 4.084a8.065 8.065 0 0 1 1.928.198 4.29 4.29 0 0 1 1.49.638c.418.303.748.711.958 1.182.241.579.357 1.203.341 1.83a3.506 3.506 0 0 1-.506 1.961 3.726 3.726 0 0 1-1.503 1.287 3.588 3.588 0 0 1 2.027 1.437c.464.747.697 1.615.67 2.494a4.593 4.593 0 0 1-.423 2.032 3.945 3.945 0 0 1-1.163 1.413 5.114 5.114 0 0 1-1.683.807 7.135 7.135 0 0 1-1.928.259H0V4.084h6.947Zm-.235 12.9c.308.004.616-.029.916-.099a2.18 2.18 0 0 0 .766-.332c.228-.158.411-.371.534-.619.142-.317.208-.663.191-1.009a2.08 2.08 0 0 0-.642-1.715 2.618 2.618 0 0 0-1.696-.505h-3.54v4.279h3.471Zm13.635-5.967a2.13 2.13 0 0 0-1.654-.619 2.336 2.336 0 0 0-1.163.259 2.474 2.474 0 0 0-.738.62 2.359 2.359 0 0 0-.396.792c-.074.239-.12.485-.137.734h4.769a3.239 3.239 0 0 0-.679-1.785l-.002-.001Zm-13.813-.648a2.254 2.254 0 0 0 1.423-.433c.399-.355.607-.88.56-1.413a1.916 1.916 0 0 0-.178-.891 1.298 1.298 0 0 0-.495-.533 1.851 1.851 0 0 0-.711-.274 3.966 3.966 0 0 0-.835-.073H3.241v3.631h3.293v-.014ZM21.62 5.122h-5.976v1.527h5.976V5.122Z'/%3E%3C/svg%3E"); }
+a.adobeportfolio::before { background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 200 200'%3E%3Cpath fill='%23111' d='M86.36,88.58c0,7.95-5.48,11.1-13.3,11.1h-11.24v-22.48h11.79c8.09,0,12.75,4.11,12.75,11.37ZM200,9.74v180.53c0,5.38-4.36,9.74-9.74,9.74H9.74c-5.38,0-9.74-4.36-9.74-9.74V9.74C0,4.36,4.36,0,9.74,0h180.53c5.38,0,9.74,4.36,9.74,9.74ZM112.94,88.03c0-20.42-14.66-32.62-40.7-32.62h-35.91v91.82h25.49v-25.76h12.61c18.64,0,38.51-9.59,38.51-33.44ZM163.67,53.08c-2.19-.82-6.17-1.23-10.28-1.23-16.17,0-26.45,8.91-26.86,24.53h-8.91v19.05h8.91v51.8h23.98v-51.8h13.02v-19.05h-13.02c.27-3.97,1.92-6.44,7.4-6.44,1.92,0,4.11.27,5.62.82l.14-17.68Z'/%3E%3C/svg%3E"); }
+/* VIDEO & STREAMING */
+a.youtube::before { background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Cpath fill='%23111' d='M23.498 6.186a3.016 3.016 0 0 0-2.122-2.136C19.505 3.545 12 3.545 12 3.545s-7.505 0-9.377.505A3.017 3.017 0 0 0 .502 6.186C0 8.07 0 12 0 12s0 3.93.502 5.814a3.016 3.016 0 0 0 2.122 2.136c1.871.505 9.376.505 9.376.505s7.505 0 9.377-.505a3.015 3.015 0 0 0 2.122-2.136C24 15.93 24 12 24 12s0-3.93-.502-5.814zM9.545 15.568V8.432L15.818 12l-6.273 3.568z'/%3E%3C/svg%3E"); }
+a.twitch::before { background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Cpath fill='%23111' d='M11.571 4.714h1.715v5.143H11.57zm4.715 0H18v5.143h-1.714zM6 0L1.714 4.286v15.428h5.143V24l4.286-4.286h3.428L22.286 12V0zm14.571 11.143l-3.428 3.428h-3.429l-3 3v-3H6.857V1.714h13.714Z'/%3E%3C/svg%3E"); }
+/* SHOPS & SUPPORT */
+a.patreon::before { background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Cpath fill='%23111' d='M22.957 7.21c-.004-3.064-2.391-5.576-5.191-6.482-3.478-1.125-8.064-.962-11.384.604C2.357 3.231 1.093 7.391 1.046 11.54c-.039 3.411.302 12.396 5.369 12.46 3.765.047 4.326-4.804 6.068-7.141 1.24-1.662 2.836-2.132 4.801-2.618 3.376-.836 5.678-3.501 5.673-7.031Z'/%3E%3C/svg%3E"); }
+a.kofi::before { background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Cpath fill='%23111' d='M11.351 2.715c-2.7 0-4.986.025-6.83.26C2.078 3.285 0 5.154 0 8.61c0 3.506.182 6.13 1.585 8.493 1.584 2.701 4.233 4.182 7.662 4.182h.83c4.209 0 6.494-2.234 7.637-4a9.5 9.5 0 0 0 1.091-2.338C21.792 14.688 24 12.22 24 9.208v-.415c0-3.247-2.13-5.507-5.792-5.87-1.558-.156-2.65-.208-6.857-.208m0 1.947c4.208 0 5.09.052 6.571.182 2.624.311 4.13 1.584 4.13 4v.39c0 2.156-1.792 3.844-3.87 3.844h-.935l-.156.649c-.208 1.013-.597 1.818-1.039 2.546-.909 1.428-2.545 3.064-5.922 3.064h-.805c-2.571 0-4.831-.883-6.078-3.195-1.09-2-1.298-4.155-1.298-7.506 0-2.181.857-3.402 3.012-3.714 1.533-.233 3.559-.26 6.39-.26m6.547 2.287c-.416 0-.65.234-.65.546v2.935c0 .311.234.545.65.545 1.324 0 2.051-.754 2.051-2s-.727-2.026-2.052-2.026m-10.39.182c-1.818 0-3.013 1.48-3.013 3.142 0 1.533.858 2.857 1.949 3.897.727.701 1.87 1.429 2.649 1.896a1.47 1.47 0 0 0 1.507 0c.78-.467 1.922-1.195 2.623-1.896 1.117-1.039 1.974-2.364 1.974-3.897 0-1.662-1.247-3.142-3.039-3.142-1.065 0-1.792.545-2.338 1.298-.493-.753-1.246-1.298-2.312-1.298'/%3E%3C/svg%3E"); }
+a.etsy::before { background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Cpath fill='%23111' d='M8.559 2.445c0-.325.033-.52.59-.52h7.465c1.3 0 2.02 1.11 2.54 3.193l.42 1.666h1.27c.23-4.728.43-6.784.43-6.784s-3.196.36-5.09.36H6.635L1.521.196v1.37l1.725.326c1.21.24 1.5.496 1.6 1.606 0 0 .11 3.27.11 8.64 0 5.385-.09 8.61-.09 8.61 0 .973-.39 1.333-1.59 1.573l-1.722.33V24l5.13-.165h8.55c1.935 0 6.39.165 6.39.165.105-1.17.75-6.48.855-7.064h-1.2l-1.284 2.91c-1.005 2.28-2.476 2.445-4.11 2.445h-4.906c-1.63 0-2.415-.64-2.415-2.05V12.8s3.62 0 4.79.096c.912.064 1.463.325 1.76 1.598l.39 1.695h1.41l-.09-4.278.192-4.305h-1.391l-.45 1.89c-.283 1.244-.48 1.47-1.754 1.6-1.666.17-4.815.14-4.815.14V2.45h-.05z'/%3E%3C/svg%3E"); }
+a.gumroad::before { background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Cpath fill='%23111' d='M12 0A12 12 0 0 0 0 12a12 12 0 0 0 12 12 12 12 0 0 0 12-12A12 12 0 0 0 12 0Zm-.007 5.12c4.48 0 5.995 3.025 6.064 4.744h-3.239c-.069-.962-.897-2.406-2.896-2.406-2.136 0-3.514 1.857-3.514 4.126 0 2.27 1.378 4.125 3.514 4.125 1.93 0 2.758-1.512 3.103-3.025h-3.103v-1.238h6.509v6.327h-2.855v-3.989c-.207 1.444-1.102 4.264-4.617 4.264-3.516 0-5.584-2.82-5.584-6.326 0-3.645 2.276-6.602 6.618-6.602z'/%3E%3C/svg%3E"); }
+a.bigcartel::before { background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Cpath fill='%23111' d='M12 13.068v-1.006c0-.63.252-1.256.88-1.508l7.79-4.9c.503-.252.755-.88.755-1.51V0L12 6.03 2.575 0v12.69c0 3.394 1.51 6.284 4.02 7.917L11.875 24l5.28-3.393c2.513-1.51 4.02-4.398 4.02-7.916V7.036L12 13.068z'/%3E%3C/svg%3E"); }
+a.bandcamp::before { background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Cpath fill='%23111' d='M0 18.75l7.437-13.5H24l-7.438 13.5H0z'/%3E%3C/svg%3E"); }
+/* COMMUNITIES */
+a.discord::before { background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Cpath fill='%23111' d='M20.317 4.3698a19.7913 19.7913 0 00-4.8851-1.5152.0741.0741 0 00-.0785.0371c-.211.3753-.4447.8648-.6083 1.2495-1.8447-.2762-3.68-.2762-5.4868 0-.1636-.3933-.4058-.8742-.6177-1.2495a.077.077 0 00-.0785-.037 19.7363 19.7363 0 00-4.8852 1.515.0699.0699 0 00-.0321.0277C.5334 9.0458-.319 13.5799.0992 18.0578a.0824.0824 0 00.0312.0561c2.0528 1.5076 4.0413 2.4228 5.9929 3.0294a.0777.0777 0 00.0842-.0276c.4616-.6304.8731-1.2952 1.226-1.9942a.076.076 0 00-.0416-.1057c-.6528-.2476-1.2743-.5495-1.8722-.8923a.077.077 0 01-.0076-.1277c.1258-.0943.2517-.1923.3718-.2914a.0743.0743 0 01.0776-.0105c3.9278 1.7933 8.18 1.7933 12.0614 0a.0739.0739 0 01.0785.0095c.1202.099.246.1981.3728.2924a.077.077 0 01-.0066.1276 12.2986 12.2986 0 01-1.873.8914.0766.0766 0 00-.0407.1067c.3604.698.7719 1.3628 1.225 1.9932a.076.076 0 00.0842.0286c1.961-.6067 3.9495-1.5219 6.0023-3.0294a.077.077 0 00.0313-.0552c.5004-5.177-.8382-9.6739-3.5485-13.6604a.061.061 0 00-.0312-.0286zM8.02 15.3312c-1.1825 0-2.1569-1.0857-2.1569-2.419 0-1.3332.9555-2.4189 2.157-2.4189 1.2108 0 2.1757 1.0952 2.1568 2.419 0 1.3332-.9555 2.4189-2.1569 2.4189zm7.9748 0c-1.1825 0-2.1569-1.0857-2.1569-2.419 0-1.3332.9554-2.4189 2.1569-2.4189 1.2108 0 2.1757 1.0952 2.1568 2.419 0 1.3332-.946 2.4189-2.1568 2.4189Z'/%3E%3C/svg%3E"); }
+/* PROFESSIONAL */
+a.linkedin::before { background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Cpath fill='%23111' d='M20.447 20.452h-3.554v-5.569c0-1.328-.027-3.037-1.852-3.037-1.853 0-2.136 1.445-2.136 2.939v5.667H9.351V9h3.414v1.561h.046c.477-.9 1.637-1.85 3.37-1.85 3.601 0 4.267 2.37 4.267 5.455v6.286zM5.337 7.433c-1.144 0-2.063-.926-2.063-2.065 0-1.138.92-2.063 2.063-2.063 1.14 0 2.064.925 2.064 2.063 0 1.139-.925 2.065-2.064 2.065zm1.782 13.019H3.555V9h3.564v11.452zM22.225 0H1.771C.792 0 0 .774 0 1.729v20.542C0 23.227.792 24 1.771 24h20.451C23.2 24 24 23.227 24 22.271V1.729C24 .774 23.2 0 22.222 0h.003z'/%3E%3C/svg%3E"); }
+a.github::before { background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Cpath fill='%23111' d='M12 .297c-6.63 0-12 5.373-12 12 0 5.303 3.438 9.8 8.205 11.385.6.113.82-.258.82-.577 0-.285-.01-1.04-.015-2.04-3.338.724-4.042-1.61-4.042-1.61C4.422 18.07 3.633 17.7 3.633 17.7c-1.087-.744.084-.729.084-.729 1.205.084 1.838 1.236 1.838 1.236 1.07 1.835 2.809 1.305 3.495.998.108-.776.417-1.305.76-1.605-2.665-.3-5.466-1.332-5.466-5.93 0-1.31.465-2.38 1.235-3.22-.135-.303-.54-1.523.105-3.176 0 0 1.005-.322 3.3 1.23.96-.267 1.98-.399 3-.405 1.02.006 2.04.138 3 .405 2.28-1.552 3.285-1.23 3.285-1.23.645 1.653.24 2.873.12 3.176.765.84 1.23 1.91 1.23 3.22 0 4.61-2.805 5.625-5.475 5.92.42.36.81 1.096.81 2.22 0 1.606-.015 2.896-.015 3.286 0 .315.21.69.825.57C20.565 22.092 24 17.592 24 12.297c0-6.627-5.373-12-12-12'/%3E%3C/svg%3E"); }
+/* OTHER */
+a.rss::before { background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Cpath fill='%23111' d='M19.199 24C19.199 13.467 10.533 4.8 0 4.8V0c13.165 0 24 10.835 24 24h-4.801zM3.291 17.415c1.814 0 3.293 1.479 3.293 3.295 0 1.813-1.485 3.29-3.301 3.29C1.47 24 0 22.526 0 20.71s1.475-3.294 3.291-3.295zM15.909 24h-4.665c0-6.169-5.075-11.245-11.244-11.245V8.09c8.727 0 15.909 7.184 15.909 15.91z'/%3E%3C/svg%3E"); }
+	</style>
+</head>
+<body>
+	<div id="card">
+<!--
+╔══════════════════════════════════════════════════════════════════╗
+║     PROFILE                                                      ║
+╚══════════════════════════════════════════════════════════════════╝
+-->
+		<div id="profile">
+
+<!-- ★★★★★ EDIT 3: ★★★★★ -->
+<!-- —————▶	Replace "avatar.png" with your image filename. The image should be
+			square (same width and height). Recommended: 512×512 px or larger.
+			change 'alt' to your name											◀————— -->
+			<img id="avatar" src="avatar.png" alt="Lincoln Bio profile photo">
+
+<!-- Banner Ribbon -->
+		 <div id="banner">
+			<svg class="wing" id="wing-left" viewBox="0 0 54 27" xmlns="http://www.w3.org/2000/svg" aria-hidden="true"><path d="M30.04,18V0H0l9,13.5L0,27h53.26v-7.5h-21.72c-.83,0-1.5-.67-1.5-1.5Z"/></svg>
+
+<!-- ★★★★★ EDIT 4: ★★★★★ -->
+<!-- —————▶	Change the text inside <span id="banner-name"> to your name.		◀————— -->
+			<span id="banner-name">Lincoln Bio</span>
+
+			<svg class="wing" id="wing-right" viewBox="0 0 54 27" xmlns="http://www.w3.org/2000/svg" aria-hidden="true"><path d="M30.04,18V0H0l9,13.5L0,27h53.26v-7.5h-21.72c-.83,0-1.5-.67-1.5-1.5Z"/></svg>
+		 </div>
+		</div>
+<!-- /profile -->
+<!--
+╔══════════════════════════════════════════════════════════════════╗
+║     TAGLINE                                                      ║
+╚══════════════════════════════════════════════════════════════════╝
+-->
+<!-- ★★★★★ EDIT 5: ★★★★★ -->
+<!-- —————▶	Change the text inside <p id="tagline"> to your tagline.
+			 delete the whole <p> to remove										◀————— -->
+		<p id="tagline">Your tagline or short bio goes here.</p>
+
+<!--
+╔══════════════════════════════════════════════════════════════════╗
+║     FEATURED ICONS                                               ║
+╚══════════════════════════════════════════════════════════════════╝
+	Up to 6 platform icons are shown as small circular buttons.
+-->
+		<div id="featured">
+
+<!-- ★★★★★ EDIT 6: ★★★★★ -->
+<!-- —————▶	Uncomment the icons you want & fill in your URL.					◀————— -->
+<!--
+			<a class="feat website" href="https://YOURWEBSITE.com" target="_blank" rel="noopener" aria-label="My Website"></a>
+-->
+<!--
+			<a class="feat email" href="mailto:you@yourdomain.com" target="_blank" rel="noopener" aria-label="Email Me"></a>
+-->
+
+<!-- Social -->
+<!--
+			<a class="feat bluesky" href="https://bsky.app/profile/YOURDOMAIN" target="_blank" rel="noopener" aria-label="Bluesky"></a>
+-->
+<!--
+			<a class="feat mastodon" href="https://YOURINSTANCE/@YOURHANDLE" target="_blank" rel="noopener" aria-label="Mastodon"></a>
+-->
+<!--
+			<a class="feat threads" href="https://www.threads.net/@YOURUSERNAME" target="_blank" rel="noopener" aria-label="Threads"></a>
+-->
+<!--
+			<a class="feat instagram" href="https://www.instagram.com/YOURUSERNAME/" target="_blank" rel="noopener" aria-label="Instagram"></a>
+-->
+<!--
+			<a class="feat tumblr" href="https://YOURBLOG.tumblr.com" target="_blank" rel="noopener" aria-label="Tumblr"></a>
+-->
+<!--
+			<a class="feat twitter" href="https://twitter.com/YOURHANDLE" target="_blank" rel="noopener" aria-label="Twitter"></a>
+-->
+<!--
+			<a class="feat facebook" href="https://facebook.com/YOURPAGE" target="_blank" rel="noopener" aria-label="Facebook"></a>
+-->
+<!--
+			<a class="feat tiktok" href="https://www.tiktok.com/@YOURUSERNAME" target="_blank" rel="noopener" aria-label="TikTok"></a>
+-->
+<!--
+			<a class="feat pixelfed" href="https://YOURINSTANCE/@YOURHANDLE" target="_blank" rel="noopener" aria-label="Pixelfed"></a>
+-->
+
+<!--  Art  -->
+<!--
+			<a class="feat cara" href="https://cara.app/YOURHANDLE" target="_blank" rel="noopener" aria-label="Cara"></a>
+-->
+<!--
+			<a class="feat deviantart" href="https://www.deviantart.com/YOURUSERNAME" target="_blank" rel="noopener" aria-label="DeviantArt"></a>
+-->
+<!--
+			<a class="feat artstation" href="https://www.artstation.com/YOURHANDLE" target="_blank" rel="noopener" aria-label="ArtStation"></a>
+-->
+<!--
+			<a class="feat behance" href="https://www.behance.net/YOURHANDLE" target="_blank" rel="noopener" aria-label="Behance"></a>
+-->
+<!--
+			<a class="feat adobeportfolio" href="https://YOURNAME.myportfolio.com" target="_blank" rel="noopener" aria-label="Adobe Portfolio"></a>
+-->
+
+<!--  Video & Streaming  -->
+<!--
+			<a class="feat youtube" href="https://youtube.com/@YOURCHANNEL" target="_blank" rel="noopener" aria-label="YouTube"></a>
+-->
+<!--
+			<a class="feat twitch" href="https://www.twitch.tv/YOURHANDLE" target="_blank" rel="noopener" aria-label="Twitch"></a>
+-->
+
+<!--  Shops & Support  -->
+<!--
+			<a class="feat patreon" href="https://patreon.com/YOURPAGE" target="_blank" rel="noopener" aria-label="Patreon"></a>
+-->
+<!--
+			<a class="feat kofi" href="https://ko-fi.com/YOURNAME" target="_blank" rel="noopener" aria-label="Ko-fi"></a>
+-->
+<!--
+			<a class="feat etsy" href="https://YOURSHOP.etsy.com" target="_blank" rel="noopener" aria-label="Etsy"></a>
+-->
+<!--
+			<a class="feat gumroad" href="https://YOURNAME.gumroad.com" target="_blank" rel="noopener" aria-label="Gumroad"></a>
+-->
+<!--
+			<a class="feat bigcartel" href="https://YOURSHOP.bigcartel.com" target="_blank" rel="noopener" aria-label="Big Cartel"></a>
+-->
+<!--
+			<a class="feat bandcamp" href="https://YOURNAME.bandcamp.com" target="_blank" rel="noopener" aria-label="Bandcamp"></a>
+-->
+
+<!--  Communities  -->
+<!--
+			<a class="feat discord" href="https://discord.gg/YOURINVITE" target="_blank" rel="noopener" aria-label="Discord"></a>
+-->
+
+<!--  Professional  -->
+<!--
+			<a class="feat linkedin" href="https://linkedin.com/in/YOURPROFILE" target="_blank" rel="noopener" aria-label="LinkedIn"></a>
+-->
+<!--
+			<a class="feat github" href="https://github.com/YOURUSERNAME" target="_blank" rel="noopener" aria-label="GitHub"></a>
+-->
+
+<!-- OTHER -->
+<!--
+			<a class="feat rss" href="https://YOURBLOG.com/feed" target="_blank" rel="noopener" aria-label="RSS Feed"></a>
+-->
+		</div>
+<!-- /featured -->
+
+<!--
+╔══════════════════════════════════════════════════════════════════╗
+║     LINK LIST                                                    ║
+╚══════════════════════════════════════════════════════════════════╝
+-->
+		<ul id="links">
+
+<!-- ★★★★★ EDIT 7: ★★★★★ -->
+<!-- —————▶	Uncomment the platforms you want, fill in your URL & text.			◀————— -->
+<!-- —————▶	To reorder links, cut and paste the whole <li>...</li> block.		◀————— -->
+<!--  Contact  -->
+<!--
+			<li><a class="website" href="https://YOURWEBSITE.com" target="_blank" rel="noopener">My Website</a></li>
+-->
+<!--
+			<li><a class="email" href="mailto:you@yourdomain.com" target="_blank" rel="noopener">Email Me</a></li>
+-->
+
+<!-- Social -->
+<!--
+			<li><a class="bluesky" href="https://bsky.app/profile/YOURDOMAIN" target="_blank" rel="noopener">Bluesky</a></li>
+-->
+<!--
+			<li><a class="mastodon" href="https://YOURINSTANCE/@YOURHANDLE" target="_blank" rel="noopener">Mastodon</a></li>
+-->
+<!--
+			<li><a class="threads" href="https://www.threads.net/@YOURUSERNAME" target="_blank" rel="noopener">Threads</a></li>
+-->
+<!--
+			<li><a class="instagram" href="https://www.instagram.com/YOURUSERNAME/" target="_blank" rel="noopener">Instagram</a></li>
+-->
+<!--
+			<li><a class="tumblr" href="https://YOURBLOG.tumblr.com" target="_blank" rel="noopener">Tumblr</a></li>
+-->
+<!--
+			<li><a class="twitter" href="https://twitter.com/YOURHANDLE" target="_blank" rel="noopener">Twitter</a></li>
+-->
+<!--
+			<li><a class="facebook" href="https://facebook.com/YOURPAGE" target="_blank" rel="noopener">Facebook</a></li>
+-->
+<!--
+			<li><a class="tiktok" href="https://www.tiktok.com/@YOURUSERNAME" target="_blank" rel="noopener">TikTok</a></li>
+-->
+<!--
+			<li><a class="pixelfed" href="https://YOURINSTANCE/@YOURHANDLE" target="_blank" rel="noopener">Pixelfed</a></li>
+-->
+
+<!--  Art  -->
+<!--
+			<li><a class="cara" href="https://cara.app/YOURHANDLE" target="_blank" rel="noopener">Cara</a></li>
+-->
+<!--
+			<li><a class="deviantart" href="https://www.deviantart.com/YOURUSERNAME" target="_blank" rel="noopener">DeviantArt</a></li>
+-->
+<!--
+			<li><a class="artstation" href="https://www.artstation.com/YOURHANDLE" target="_blank" rel="noopener">ArtStation</a></li>
+-->
+<!--
+			<li><a class="behance" href="https://www.behance.net/YOURHANDLE" target="_blank" rel="noopener">Behance</a></li>
+-->
+<!--
+			<li><a class="adobeportfolio" href="https://YOURNAME.myportfolio.com" target="_blank" rel="noopener">Adobe Portfolio</a></li>
+-->
+
+<!--  Video & Streaming  -->
+<!--
+			<li><a class="youtube" href="https://youtube.com/@YOURCHANNEL" target="_blank" rel="noopener">YouTube</a></li>
+-->
+<!--
+			<li><a class="twitch" href="https://www.twitch.tv/YOURHANDLE" target="_blank" rel="noopener">Twitch</a></li>
+-->
+
+<!--  Shops & Support  -->
+<!--
+			<li><a class="patreon" href="https://patreon.com/YOURPAGE" target="_blank" rel="noopener">Patreon</a></li>
+-->
+<!--
+			<li><a class="kofi" href="https://ko-fi.com/YOURNAME" target="_blank" rel="noopener">Ko-fi</a></li>
+-->
+<!--
+			<li><a class="etsy" href="https://YOURSHOP.etsy.com" target="_blank" rel="noopener">Etsy</a></li>
+-->
+<!--
+			<li><a class="gumroad" href="https://YOURNAME.gumroad.com" target="_blank" rel="noopener">Gumroad</a></li>
+-->
+<!--
+			<li><a class="bigcartel" href="https://YOURSHOP.bigcartel.com" target="_blank" rel="noopener">Big Cartel</a></li>
+-->
+<!--
+			<li><a class="bandcamp" href="https://YOURNAME.bandcamp.com" target="_blank" rel="noopener">Bandcamp</a></li>
+-->
+
+<!--  Communities  -->
+<!--
+			<li><a class="discord" href="https://discord.gg/YOURINVITE" target="_blank" rel="noopener">Discord</a></li>
+-->
+
+<!--  Professional  -->
+<!--
+			<li><a class="linkedin" href="https://linkedin.com/in/YOURPROFILE" target="_blank" rel="noopener">LinkedIn</a></li>
+-->
+<!--
+			<li><a class="github" href="https://github.com/YOURUSERNAME" target="_blank" rel="noopener">GitHub</a></li>
+-->
+
+<!-- OTHER -->
+<!--
+			<li><a class="rss" href="https://YOURBLOG.com/feed" target="_blank" rel="noopener">RSS Feed</a></li>
+-->
+
+		</ul><!-- /links -->
+
+<!--
+╔══════════════════════════════════════════════════════════════════╗
+║     COPYRIGHT                                                    ║
+╚══════════════════════════════════════════════════════════════════╝
+-->
+		<footer>
+
+<!-- ★★★★★ EDIT 8: ★★★★★ -->
+<!-- —————▶	Change "Lincoln Bio" to your own name; update the year each January	◀————— -->
+			<p id="copyright">
+				&copy;2026 Lincoln Bio&thinsp;&bull;&thinsp;Made with <a href="https://github.com/mrjameskitty/lincoln-bio" target="_blank" rel="noopener">Lincoln Bio</a>
+			</p>
+		</footer>
+	</div>
+<!-- /card -->
+</body>
+</html>
